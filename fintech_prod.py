@@ -1,5 +1,5 @@
 # ----------------------------------------------------------
-# SAMPLE DATA GENERATION (For Testing)
+# SAMPLE DATA  (For Testing)
 # ----------------------------------------------------------
 
 from pyspark.sql.types import *
