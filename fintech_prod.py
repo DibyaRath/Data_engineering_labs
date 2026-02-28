@@ -1,3 +1,40 @@
+# ----------------------------------------------------------
+# SAMPLE DATA GENERATION (For Testing)
+# ----------------------------------------------------------
+
+from pyspark.sql.types import *
+
+sample_data = [
+    # Initial records
+    ("C001", "Alice", "alice@email.com", "NY", "LOW", "2026-01-01 10:00:00", "2026-01-01 10:05:00"),
+    ("C002", "Bob", "bob@email.com", "CA", "MEDIUM", "2026-01-01 11:00:00", "2026-01-01 11:05:00"),
+
+    # Change in risk_level
+    ("C001", "Alice", "alice@email.com", "NY", "HIGH", "2026-01-02 09:00:00", "2026-01-02 09:05:00"),
+
+    # Late arriving update (business time older than current)
+    ("C001", "Alice", "alice_new@email.com", "NY", "HIGH", "2026-01-01 15:00:00", "2026-01-03 08:00:00"),
+
+    # Duplicate reprocessing case (same updated_at)
+    ("C002", "Bob", "bob@email.com", "CA", "MEDIUM", "2026-01-01 11:00:00", "2026-01-04 09:00:00"),
+]
+
+schema = StructType([
+    StructField("customer_id", StringType()),
+    StructField("name", StringType()),
+    StructField("email", StringType()),
+    StructField("address", StringType()),
+    StructField("risk_level", StringType()),
+    StructField("updated_at", StringType()),
+    StructField("ingestion_time", StringType()),
+])
+
+updates = spark.createDataFrame(sample_data, schema) \
+    .withColumn("updated_at", to_timestamp("updated_at")) \
+    .withColumn("ingestion_time", to_timestamp("ingestion_time"))
+
+updates.show(truncate=False)
+
 # ==========================================================
 # Day 9 – Large Scale SCD Type 2 + Late Data + Idempotency
 # ==========================================================
