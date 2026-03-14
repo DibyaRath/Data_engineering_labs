@@ -1,3 +1,57 @@
+Scenario:
+
+You are a Senior Data Engineer at a global retail company.
+
+Your team maintains a **customer dimension table** used for marketing analytics and fraud detection.
+
+Scale:
+
+• 1B customers
+• 2.8B historical records
+• 1.5 TB daily updates
+
+Cluster:
+
+• 200 executors
+• 8 cores each
+
+SLA: **60 minutes**
+
+
+Input Dataset : customer_updates
+
+customer_id
+name
+email
+city
+loyalty_tier
+updated_at
+ingestion_time
+
+Target Table (SCD Type 2) : customer_dim
+
+customer_id
+name
+email
+city
+loyalty_tier
+effective_from
+effective_to
+is_current
+
+
+
+1️⃣ Write PySpark code to read incremental customer updates from Parquet.
+2️⃣ Write PySpark code to generate a hash column for change detection.
+3️⃣ Write PySpark code to load an existing Delta Lake dimension table.
+4️⃣ Write PySpark code to filter only current records.
+5️⃣ Write PySpark code to detect changed rows.
+6️⃣ Write PySpark code to close the previous SCD record using Delta MERGE.
+7️⃣ Write PySpark code to insert the new SCD version.
+8️⃣ Write PySpark code to validate that only one active record exists.
+
+
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from delta.tables import DeltaTable
