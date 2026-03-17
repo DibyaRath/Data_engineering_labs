@@ -1,3 +1,63 @@
+
+You are designing a **customer data platform**.
+
+Requirements:
+
+• Capture every change from source systems
+• Maintain full historical data
+• Support dashboards + analytics
+• Scale to **10B+ records/day**
+
+Now the real question is:
+
+👉 **Do you use CDC or SCD?**
+
+---
+
+### 🔄 CDC — Change Data Capture
+
+CDC tracks **what changed in the system**.
+
+Every event is captured:
+
+👇
+
+## customer_id   city        operation   timestamp
+
+101           Mumbai      INSERT      10:00
+101           Bangalore   UPDATE      12:00
+101           Bangalore   DELETE      15:00
+
+👉 CDC = **event stream of changes**
+
+Used for:
+
+• real-time pipelines
+• streaming ingestion
+• syncing databases
+
+---
+
+### 🕰️ SCD — Slowly Changing Dimensions
+
+SCD tracks **how data looked over time**.
+
+👇
+
+## customer_id   city        start_date   end_date   is_current
+
+101           Mumbai      10:00        12:00      false
+101           Bangalore   12:00        NULL       true
+
+👉 SCD = **historical state**
+
+Used for:
+
+• data warehouse
+• BI reporting
+• point-in-time analysis
+
+
 from pyspark.sql import functions as F
 from pyspark.sql.window import Window
 from delta.tables import DeltaTable
